@@ -84,6 +84,25 @@ class Trie {
       root.removeChild(ch);
     }
   }
+
+  autoComplete(ch: string) {
+    const node = this.root.getChild(ch);
+    if (node == null) return [];
+    let array = [];
+    this._autoComplete(node, array);
+    console.log(array);
+  }
+
+  _autoComplete(node, array: string[], word: string = '') {
+    let children = node.getChildren();
+    word += node.value;
+    if (node.isEndOfword) {
+      array.push(word);
+    }
+    for (let child of children) {
+      this._autoComplete(child, array, word);
+    }
+  }
 }
 
 var trie = new Trie();
