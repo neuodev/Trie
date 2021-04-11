@@ -53,11 +53,19 @@ class Trie {
     if (!current.isEndOfWord) return false;
     return true;
   }
-  
+
+  public traverse(root: Char) {
+    // pre-order : visit the root first
+    console.log(root.value);
+    for (let item of root.getChilren()) {
+      this.traverse(item);
+    }
+  }
 }
 
 var trie = new Trie();
 trie.insert('cat');
 trie.insert('cann');
 console.log(trie.contains('ksfjo'));
+trie.traverse(trie.root);
 // console.log(trie);
