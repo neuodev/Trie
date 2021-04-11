@@ -1,10 +1,10 @@
 class Char {
   value: string;
-  children: Char[];
+  children: {};
   isEndOfWord: boolean;
   constructor(value) {
     this.value = value;
-    this.children = [];
+    this.children = {};
   }
 }
 
@@ -15,15 +15,14 @@ class Trie {
   }
   insert(word: string) {
     let current = this.root;
-    const CHAR_CODE_OF_lETTER_A = 97;
+
     for (let i = 0; i < word.length; i++) {
       const char = word[i];
-      const idx = word.charCodeAt(i) - CHAR_CODE_OF_lETTER_A;
 
-      if (!current.children[idx]) {
-        current.children[idx] = new Char(char);
+      if (!current.children[char]) {
+        current.children[char] = new Char(char);
       }
-      current = current.children[idx];
+      current = current.children[char];
     }
     current.isEndOfWord = true;
   }
