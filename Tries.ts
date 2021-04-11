@@ -1,10 +1,21 @@
 class Char {
   value: string;
-  children: {};
+  private children: {};
   isEndOfWord: boolean;
   constructor(value) {
     this.value = value;
     this.children = {};
+  }
+
+  public hasChild(ch: string) {
+    return this.children[ch];
+  }
+  public addChild(ch: string) {
+    this.children[ch] = new Char(ch);
+  }
+
+  public getChild(ch: string) {
+    return this.children[ch];
   }
 }
 
@@ -19,16 +30,28 @@ class Trie {
     for (let i = 0; i < word.length; i++) {
       const char = word[i];
 
-      if (!current.children[char]) {
-        current.children[char] = new Char(char);
+      if (!current.hasChild(char)) {
+        current.addChild(char);
       }
-      current = current.children[char];
+      current = current.getChild(char);
     }
     current.isEndOfWord = true;
+  }
+
+  contains(word: string) {
+    let current = this.root;
+    for (let i = 0; i < word.length; i++) {
+      const char = word[i];
+      if (!current.hasChild(char)) return false;
+      current = current.getChild(char);
+    }
+    if (!current.isEndOfWord) return false;
+    return true;
   }
 }
 
 var trie = new Trie();
 trie.insert('cat');
-trie.insert('can');
-console.log(trie);
+trie.insert('cann');
+console.log(trie.contains('can'));
+// console.log(trie);
