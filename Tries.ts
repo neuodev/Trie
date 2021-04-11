@@ -18,8 +18,15 @@ class Char {
     return this.children[ch];
   }
 
-  getChilren() {
+  public getChildren() {
     return Object.values(this.children);
+  }
+
+  public hasChildren() {
+    return this.getChildren() >= 1;
+  }
+  removeChild(ch: string) {
+    delete this.children[ch];
   }
 }
 
@@ -28,7 +35,7 @@ class Trie {
   constructor() {
     this.root = new Char(' ');
   }
-  insert(word: string) {
+  public insert(word: string) {
     let current = this.root;
 
     for (let i = 0; i < word.length; i++) {
@@ -42,7 +49,7 @@ class Trie {
     current.isEndOfWord = true;
   }
 
-  contains(word: string) {
+  public contains(word: string) {
     if (word == null) return false;
     let current = this.root;
     for (let i = 0; i < word.length; i++) {
@@ -57,15 +64,33 @@ class Trie {
   public traverse(root: Char) {
     // pre-order : visit the root first
     console.log(root.value);
-    for (let item of root.getChilren()) {
+    for (let item of root.getChildren()) {
       this.traverse(item);
+    }
+  }
+
+  remove(word: string, root: Char, idx: number) {
+    if (!word) return;
+    // base case
+    if (idx === word.length) {
+      root.isEndOfWord = false;
+      return;
+    }
+    let ch = word.charAt(idx);
+    let child = root.getChild(ch);
+    if (child == null) return;
+    this.remove(word, child, idx + 1);
+    if (!child.hasChildren() && !child.isEndOfWord) {
+      root.removeChild(ch);
     }
   }
 }
 
 var trie = new Trie();
-trie.insert('cat');
-trie.insert('cann');
-console.log(trie.contains('ksfjo'));
+trie.insert('car');
+trie.insert('care');
+console.log(trie.contains('care'));
 trie.traverse(trie.root);
+trie.remove('care', trie.root, 0);
+console.log(trie.contains('care'));
 // console.log(trie);
