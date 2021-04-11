@@ -17,6 +17,10 @@ class Char {
   public getChild(ch: string) {
     return this.children[ch];
   }
+
+  getChilren() {
+    return Object.values(this.children);
+  }
 }
 
 class Trie {
@@ -39,6 +43,7 @@ class Trie {
   }
 
   contains(word: string) {
+    if (word == null) return false;
     let current = this.root;
     for (let i = 0; i < word.length; i++) {
       const char = word[i];
@@ -48,10 +53,11 @@ class Trie {
     if (!current.isEndOfWord) return false;
     return true;
   }
+  
 }
 
 var trie = new Trie();
 trie.insert('cat');
 trie.insert('cann');
-console.log(trie.contains('can'));
+console.log(trie.contains('ksfjo'));
 // console.log(trie);
